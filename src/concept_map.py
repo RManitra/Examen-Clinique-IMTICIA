@@ -2,7 +2,7 @@
 
 Dictionnaire statique qui associe des mots-clés à des descriptions
 de composition (liste de formes + positions + rôles color).
-Pas de LLM, pas d'API externe — 100% local.
+Mode statique par défaut, fallback LLM optionnel avec --llm.
 """
 
 from typing import Optional
@@ -227,8 +227,17 @@ CONCEPT_MAP: dict[str, list[dict]] = {
 }
 
 
-def lookup_concept(concept: str) -> Optional[list[dict]]:
-    """Cherche un concept dans la map (insensible à la casse, sans accents simples)."""
+def lookup_concept(
+    concept: str,
+    use_llm: bool = False,
+    brand_style: Optional[dict] = None,
+    context: str = "",
+) -> Optional[list[dict]]:
+    """Cherche un concept dans la map (insensible à la casse, sans accents simples).
+
+    Si use_llm=True et que le concept n'est pas trouvé dans la map statique,
+    appelle Gemini API pour générer un layout dynamique.
+    """
     key = concept.lower().strip()
     if key in CONCEPT_MAP:
         return CONCEPT_MAP[key]
@@ -238,4 +247,12 @@ def lookup_concept(concept: str) -> Optional[list[dict]]:
     ascii_key = "".join(c for c in normalized if unicodedata.category(c) != "Mn")
     if ascii_key in CONCEPT_MAP:
         return CONCEPT_MAP[ascii_key]
+
+    # Fallback LLM si activé
+    if use_llm:
+        from src.llm_client import generate_layout_llm
+        layout = generate_layout_llm(concept, brand_style or {}, context)
+        if layout:
+            return layout
+
     return None

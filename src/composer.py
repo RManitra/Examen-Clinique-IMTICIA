@@ -66,6 +66,11 @@ def compose_icon(
             kwargs.setdefault("stroke", stroke_color)
             kwargs.setdefault("fill", "none")
 
+        # Normaliser size→r si la forme utilise r (star, globe, gear, magnifier, refresh)
+        params = func.__code__.co_varnames[:func.__code__.co_argcount]
+        if "r" in params and "size" not in params and "size" in kwargs:
+            kwargs["r"] = kwargs.pop("size")
+
         try:
             svg_fragment = func(**kwargs)
         except TypeError:
@@ -76,6 +81,11 @@ def compose_icon(
     return "\n    ".join(elements)
 
 
-def resolve_concept(concept: str) -> Optional[list[dict]]:
-    """Résout un concept en layout DSL via concept_map."""
-    return lookup_concept(concept)
+def resolve_concept(
+    concept: str,
+    use_llm: bool = False,
+    brand_style: Optional[dict] = None,
+    context: str = "",
+) -> Optional[list[dict]]:
+    """Résout un concept en layout DSL via concept_map, avec fallback LLM optionnel."""
+    return lookup_concept(concept, use_llm=use_llm, brand_style=brand_style, context=context)

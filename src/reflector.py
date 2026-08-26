@@ -14,11 +14,12 @@ PRIMITIVES = ("path", "circle", "rect", "line", "polygon", "polyline", "ellipse"
 
 class ReflectorPipeline:
     def __init__(self, brand_style: dict, validator_bridge: ValidatorBridge,
-                 max_iter: int = 5):
+                 max_iter: int = 5, use_llm: bool = False):
         self.brand_style = brand_style
         self.validator = validator_bridge
-        self.generator = IconGenerator(brand_style)
+        self.generator = IconGenerator(brand_style, use_llm=use_llm)
         self.max_iter = max_iter
+        self.use_llm = use_llm
 
     # ─────────────────────────────────────────────
     # Boucle principale — tâche 2.1 (P0) + 2.3 log

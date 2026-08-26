@@ -9,7 +9,17 @@
       "errors": [],
       "warnings": [
         "Contrôle d’emprise ignoré (--xml-only)."
-      ]
+      ],
+      "iterations": 1,
+      "history": [
+        {
+          "iter": 0,
+          "valid": true,
+          "errors": []
+        }
+      ],
+      "semantic_score": 1.0,
+      "collection_score": 0.8925
     },
     {
       "id": "security",
@@ -18,7 +28,17 @@
       "errors": [],
       "warnings": [
         "Contrôle d’emprise ignoré (--xml-only)."
-      ]
+      ],
+      "iterations": 1,
+      "history": [
+        {
+          "iter": 0,
+          "valid": true,
+          "errors": []
+        }
+      ],
+      "semantic_score": 1.0,
+      "collection_score": 0.8925
     },
     {
       "id": "database",
@@ -27,7 +47,17 @@
       "errors": [],
       "warnings": [
         "Contrôle d’emprise ignoré (--xml-only)."
-      ]
+      ],
+      "iterations": 1,
+      "history": [
+        {
+          "iter": 0,
+          "valid": true,
+          "errors": []
+        }
+      ],
+      "semantic_score": 1.0,
+      "collection_score": 0.8925
     },
     {
       "id": "collaboration",
@@ -36,7 +66,17 @@
       "errors": [],
       "warnings": [
         "Contrôle d’emprise ignoré (--xml-only)."
-      ]
+      ],
+      "iterations": 1,
+      "history": [
+        {
+          "iter": 0,
+          "valid": true,
+          "errors": []
+        }
+      ],
+      "semantic_score": 1.0,
+      "collection_score": 0.8925
     },
     {
       "id": "deployment",
@@ -45,7 +85,17 @@
       "errors": [],
       "warnings": [
         "Contrôle d’emprise ignoré (--xml-only)."
-      ]
+      ],
+      "iterations": 1,
+      "history": [
+        {
+          "iter": 0,
+          "valid": true,
+          "errors": []
+        }
+      ],
+      "semantic_score": 1.0,
+      "collection_score": 0.8925
     }
   ]
 }

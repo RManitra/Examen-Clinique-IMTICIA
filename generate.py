@@ -16,6 +16,8 @@ def main():
     parser.add_argument("--output", type=Path, required=True, help="Dossier de destination des SVG")
     parser.add_argument("--guidelines", type=Path, default=Path("brand-guidelines.md"), help="Fichier de charte graphique")
     parser.add_argument("--references", type=Path, default=Path("references"), help="Dossier des SVG de référence")
+    parser.add_argument("--llm", action="store_true", default=False,
+                        help="Activer le fallback LLM (Gemini) pour les concepts inconnus")
     args = parser.parse_args()
 
     # 1. Analyse dynamique de la charte graphique et des références
@@ -38,7 +40,10 @@ def main():
 
     # 3. Initialisation du pipeline de génération & validation
     validator_bridge = ValidatorBridge()
-    pipeline = ReflectorPipeline(brand_style, validator_bridge)
+    pipeline = ReflectorPipeline(brand_style, validator_bridge, use_llm=args.llm)
+
+    if args.llm:
+        print("[IconForge AI] Mode LLM activé (Gemini API) pour concepts inconnus.")
 
     # 4. Traitement
     results = pipeline.process_requests(requests, args.output)

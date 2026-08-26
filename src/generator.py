@@ -6,8 +6,9 @@ from src.composer import compose_icon, resolve_concept
 
 
 class IconGenerator:
-    def __init__(self, brand_style: dict):
+    def __init__(self, brand_style: dict, use_llm: bool = False):
         self.brand_style = brand_style
+        self.use_llm = use_llm
 
         colors = brand_style.get("allowed_colors") or ["#111827"]
         required = brand_style.get("required_colors") or []
@@ -139,7 +140,12 @@ class IconGenerator:
 
     def _generate_generic(self, concept_id: str, title: str, desc: str) -> str:
         """Génère une icône pour un concept inconnu via le moteur de composition."""
-        layout = resolve_concept(concept_id)
+        layout = resolve_concept(
+            concept_id,
+            use_llm=self.use_llm,
+            brand_style=self.brand_style,
+            context=desc,
+        )
         if layout:
             inner = compose_icon(
                 layout,
