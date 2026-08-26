@@ -22,7 +22,7 @@
 | 1.3 | Corriger `parser.py` : extraire les `required_colors` depuis le markdown | P0 | ✅ | `required_colors` et `accent_colors` extraits par rôle sémantique ("principal", "accent") dans la charte |
 | 1.4      | Corriger `parser.py` : parser le `stroke-linecap` et `stroke-linejoin` depuis le markdown            | P0       | ✅     | Extraits dynamiquement via regex                                                                                                                                                               |
 | 1.5      | Corriger `parser.py` : extraire `max_colors` depuis le markdown                                      | P0       | ✅     | Extrait dynamiquement via regex                                                                                                                                                                |
-| 1.6      | Corriger `parser.py` : parser les balises interdites depuis le markdown                              | P0       | 🔶     | Regex implémentée mais retourne [] — ne matche pas la prose du markdown                                                                                                                        |
+| 1.6 | Corriger `parser.py` : parser les balises interdites depuis le markdown | P0 | ✅ | Logique par mots-clés : 8 éléments extraits (filter, font, gradient, image, mask, opacity, text, texture) |
 | 1.7      | Implémenter un vrai fallback dans `generator.py` pour les concepts inconnus                          | P0       | ⬜     | `_generate_generic()` est trop basique (rect+circle+croix)                                                                                                                                     |
 | 1.8      | Tester `generate.py` avec un concept non public (ex: "intelligence artificielle")                    | P0       | ⬜     | Vérifier que le SVG produit est valide                                                                                                                                                         |
 | 1.9      | Tester avec Inkscape installé pour valider la zone utile                                             | P0       | ⬜     | `--xml-only` masque les erreurs d'emprise                                                                                                                                                      |
@@ -154,11 +154,11 @@
 
 | Priorité  | Total  | Fait   | Reste  |
 | --------- | ------ | ------ | ------ |
-| P0 | 21 | 10 | 11 |
+| P0 | 21 | 11 | 10 |
 | P1        | 33     | 11     | 22     |
 | P2        | 9      | 0      | 9      |
 | P3        | 0      | 0      | 0      |
-| **Total** | **63** | **21** | **42** |
+| **Total** | **63** | **22** | **41** |
 
 ---
 
