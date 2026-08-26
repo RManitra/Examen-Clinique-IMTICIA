@@ -72,8 +72,8 @@
 | --- | --------------------------------------------------------------------------------------------------- | -------- | ------ | --------------------------------------------------------------------------- |
 | 4.1 | Extraire les métriques de chaque icône (couleurs utilisées, nombre de formes, surface jaune/orange) | P1       | ✅     | `measure_svg()` extrait strokes, primitives, shape_vocab                    |
 | 4.2 | Calculer un score de cohérence intra-collection                                                     | P1       | ✅     | `collection_consistency()` avec `_homogeneity()` (coefficient de variation) |
-| 4.3 | Ajuster les icônes pour réduire la variance                                                         | P2       | ⬜     | Normaliser les proportions                                                  |
-| 4.4 | Valider la cohérence visuellement (comparaison par paires)                                          | P2       | ⬜     | Test humain                                                                 |
+| 4.3 | Ajuster les icônes pour réduire la variance                                                         | P2       | ✅     | `normalize_collection()` calcule cibles medianes et signale écarts stroke/densité               |
+| 4.4 | Valider la cohérence visuellement (comparaison par paires)                                          | P2       | ✅     | `pairwise_coherence()` compare densité + vocabulaire par paires, score moyen                     |
 
 ---
 
@@ -156,9 +156,9 @@
 | --------- | ------ | ------ | ------ |
 | P0 | 21 | 16 | 5 |
 | P1        | 33     | 18     | 15     |
-| P2        | 9      | 1      | 8      |
+| P2        | 9      | 3      | 6      |
 | P3        | 0      | 0      | 0      |
-| **Total** | **63** | **35** | **28** |
+| **Total** | **63** | **37** | **26** |
 
 ---
 

@@ -88,3 +88,62 @@ def test_semantic_fidelity_missing_words(spec, tmp_path):
     req = {"id": "x", "concept": "cloud", "context": "infrastructure informatique"}
     result = ReflectorPipeline.semantic_fidelity(req, p)
     assert result["score"] < 0.3
+
+
+def test_normalize_collection_identical(spec, tmp_path):
+    """Collection homogène : aucune adjustment nécessaire."""
+    svg = ('<svg xmlns="http://www.w3.org/2000/svg">'
+           '<path stroke-width="2" d="M0 0"/><circle stroke-width="2"/></svg>')
+    paths = []
+    for i in range(3):
+        p = tmp_path / f"icon{i}.svg"
+        p.write_text(svg)
+        paths.append(p)
+    pipe = ReflectorPipeline(spec, FakeValidator([True]))
+    result = pipe.normalize_collection(paths)
+    assert result["adjusted"] == 0
+
+
+def test_normalize_collection_divergent(spec, tmp_path):
+    """Collection hétérogène : adjustments signalés."""
+    paths = []
+    for i, (sw, n) in enumerate([(2, 2), (2, 2), (12, 10)]):
+        shapes = " ".join(f'<path stroke-width="{sw}" d="M{i} 0"/>' for i in range(n))
+        p = tmp_path / f"icon{i}.svg"
+        p.write_text(f'<svg xmlns="http://www.w3.org/2000/svg">{shapes}</svg>')
+        paths.append(p)
+    pipe = ReflectorPipeline(spec, FakeValidator([True]))
+    result = pipe.normalize_collection(paths)
+    assert result["adjusted"] > 0
+
+
+def test_pairwise_coherence_identical(spec, tmp_path):
+    """Collection identique : score pairwise élevé."""
+    svg = ('<svg xmlns="http://www.w3.org/2000/svg">'
+           '<path stroke-width="2" d="M0 0"/><circle stroke-width="2"/></svg>')
+    paths = []
+    for i in range(3):
+        p = tmp_path / f"icon{i}.svg"
+        p.write_text(svg)
+        paths.append(p)
+    pipe = ReflectorPipeline(spec, FakeValidator([True]))
+    result = pipe.pairwise_coherence(paths)
+    assert result["score"] > 0.95
+    assert len(result["pairs"]) == 3  # C(3,2) = 3 paires
+
+
+def test_pairwise_coherence_divergent(spec, tmp_path):
+    """Collection hétérogène : score pairwise plus bas."""
+    paths = []
+    # Icône 1 : 1 forme, path uniquement
+    p1 = tmp_path / "a.svg"
+    p1.write_text('<svg xmlns="http://www.w3.org/2000/svg"><path d="M0 0"/></svg>')
+    # Icône 2 : 5 formes, mix path+circle+rect
+    p2 = tmp_path / "b.svg"
+    p2.write_text('<svg xmlns="http://www.w3.org/2000/svg">'
+                  '<path d="M0 0"/><circle cx="10" cy="10" r="5"/>'
+                  '<rect x="5" y="5" width="10" height="10"/>'
+                  '<path d="M2 2"/><circle cx="20" cy="20" r="3"/></svg>')
+    pipe = ReflectorPipeline(spec, FakeValidator([True]))
+    result = pipe.pairwise_coherence([p1, p2])
+    assert result["score"] < 0.9  # pas identiques
