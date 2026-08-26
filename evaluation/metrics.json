@@ -1,0 +1,51 @@
+{
+  "total": 5,
+  "valid_count": 5,
+  "results": [
+    {
+      "id": "cloud",
+      "file": "outputs/public/cloud.svg",
+      "valid": true,
+      "errors": [],
+      "warnings": [
+        "Contrôle d’emprise ignoré (--xml-only)."
+      ]
+    },
+    {
+      "id": "security",
+      "file": "outputs/public/security.svg",
+      "valid": true,
+      "errors": [],
+      "warnings": [
+        "Contrôle d’emprise ignoré (--xml-only)."
+      ]
+    },
+    {
+      "id": "database",
+      "file": "outputs/public/database.svg",
+      "valid": true,
+      "errors": [],
+      "warnings": [
+        "Contrôle d’emprise ignoré (--xml-only)."
+      ]
+    },
+    {
+      "id": "collaboration",
+      "file": "outputs/public/collaboration.svg",
+      "valid": true,
+      "errors": [],
+      "warnings": [
+        "Contrôle d’emprise ignoré (--xml-only)."
+      ]
+    },
+    {
+      "id": "deployment",
+      "file": "outputs/public/deployment.svg",
+      "valid": true,
+      "errors": [],
+      "warnings": [
+        "Contrôle d’emprise ignoré (--xml-only)."
+      ]
+    }
+  ]
+}
