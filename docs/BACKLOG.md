@@ -41,10 +41,10 @@
 | 2.1     | Implémenter la boucle `while not valid` dans `reflector.py`                                  | P0       | ✅     | `_generate_with_refine()` avec `for i in range(max_iter)`                                                                                                                          |
 | 2.2     | Ajouter un compteur d'itérations max (ex: 5)                                                 | P0       | ✅     | `max_iter=5` en paramètre du constructeur                                                                                                                                          |
 | 2.3     | Logger chaque itération (numéro, erreur, SVG produit)                                        | P1       | ✅     | `history` dans le retour avec iter, valid, errors                                                                                                                                  |
-| 2.4     | Implémenter un ajustement paramétrique après échec                                           | P1       | 🔶     | `_adjust()` crée des hints mais `generate_icon()` ne les lit pas — no-op (⚠️ **BUG B4**)                                                                                           |
-| 2.5     | Ajouter un scoring de fidélité sémantique                                                    | P2       | ⬜     | Mesurer si le SVG correspond au concept                                                                                                                                            |
+| 2.4     | Implémenter un ajustement paramétrique après échec                                           | P1       | ✅     | `generate_icon()` lit `_hints["shrink"]` et applique le scale transform sur le SVG                                                                                                 |
+| 2.5     | Ajouter un scoring de fidélité sémantique                                                    | P2       | ✅     | `semantic_fidelity()` compare mots-clés concept/contexte au titre+desc SVG, score 0..1                                                                                            |
 | 2.6     | Ajouter un scoring de cohérence de collection                                                | P2       | ✅     | `collection_consistency()` avec score stroke + densité via `_homogeneity()`                                                                                                        |
-| **2.7** | **[BUG B4] Connecter `_adjust()` au generator : les hints doivent influencer la génération** | **P1**   | ⬜     | **Actuellement `_adjust()` set des hints mais `generate_icon()` les ignore. Il faut que le generator lise les hints pour ajuster : réduire taille (shrink), forcer palette, etc.** |
+| **2.7** | **[BUG B4] Connecter `_adjust()` au generator : les hints doivent influencer la génération** | **P1**   | ✅     | **`generate_icon()` lit `_hints["shrink"]` et applique le scale transform — les hints du reflector influencent maintenant la génération**                                          |
 
 ---
 
@@ -155,10 +155,10 @@
 | Priorité  | Total  | Fait   | Reste  |
 | --------- | ------ | ------ | ------ |
 | P0 | 21 | 16 | 5 |
-| P1        | 33     | 11     | 22     |
-| P2        | 9      | 0      | 9      |
+| P1        | 33     | 13     | 20     |
+| P2        | 9      | 1      | 8      |
 | P3        | 0      | 0      | 0      |
-| **Total** | **63** | **27** | **36** |
+| **Total** | **63** | **30** | **33** |
 
 ---
 

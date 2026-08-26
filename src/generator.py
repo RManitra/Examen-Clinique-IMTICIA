@@ -66,19 +66,29 @@ class IconGenerator:
         concept_id = request.get("id", "").lower()
         concept_title = request.get("concept", "Concept")
         context = request.get("context", "")
+        hints = request.get("_hints", {})
 
         if concept_id == "cloud":
-            return self._generate_cloud(concept_title, context)
+            svg = self._generate_cloud(concept_title, context)
         elif concept_id == "security":
-            return self._generate_security(concept_title, context)
+            svg = self._generate_security(concept_title, context)
         elif concept_id == "database":
-            return self._generate_database(concept_title, context)
+            svg = self._generate_database(concept_title, context)
         elif concept_id == "collaboration":
-            return self._generate_collaboration(concept_title, context)
+            svg = self._generate_collaboration(concept_title, context)
         elif concept_id == "deployment":
-            return self._generate_deployment(concept_title, context)
+            svg = self._generate_deployment(concept_title, context)
         else:
-            return self._generate_generic(concept_id, concept_title, context)
+            svg = self._generate_generic(concept_id, concept_title, context)
+
+        # Appliquer les hints du reflector — tâche 2.4 / BUG B4
+        if hints.get("shrink") and hints["shrink"] < 1.0:
+            factor = hints["shrink"]
+            svg = svg.replace(
+                f'transform="scale({self._scale})"',
+                f'transform="scale({self._scale * factor})"',
+            )
+        return svg
 
     def _generate_cloud(self, title: str, desc: str) -> str:
         return f'''{self._svg_open(title, desc)}

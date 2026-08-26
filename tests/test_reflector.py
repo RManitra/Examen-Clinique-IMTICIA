@@ -64,3 +64,27 @@ def test_consistency_divergent_is_low(spec, tmp_path):
     high = pipe.collection_consistency(paths[:2])["score"]   # 2 identiques
     low  = pipe.collection_consistency(paths)["score"]        # + intruse
     assert low < high   # l'intruse fait chuter le score
+
+
+def test_semantic_fidelity_matches_concept(spec, tmp_path):
+    svg = ('<svg xmlns="http://www.w3.org/2000/svg">'
+           '<title id="title">Cloud</title>'
+           '<desc id="desc">Infrastructure et services informatiques à distance.</desc>'
+           '<path d="M0 0"/></svg>')
+    p = tmp_path / "cloud.svg"
+    p.write_text(svg)
+    req = {"id": "cloud", "concept": "Cloud", "context": "Infrastructure et services informatiques accessibles à distance."}
+    result = ReflectorPipeline.semantic_fidelity(req, p)
+    assert result["score"] > 0.5
+
+
+def test_semantic_fidelity_missing_words(spec, tmp_path):
+    svg = ('<svg xmlns="http://www.w3.org/2000/svg">'
+           '<title id="title">Titre irrelevant</title>'
+           '<desc id="desc">Description sans aucun mot du concept.</desc>'
+           '<path d="M0 0"/></svg>')
+    p = tmp_path / "irrelevant.svg"
+    p.write_text(svg)
+    req = {"id": "x", "concept": "cloud", "context": "infrastructure informatique"}
+    result = ReflectorPipeline.semantic_fidelity(req, p)
+    assert result["score"] < 0.3

@@ -74,6 +74,7 @@ class ReflectorPipeline:
             "warnings": report.get("warnings", []),
             "iterations": len(iterations),
             "history": iterations,
+            "semantic_score": self.semantic_fidelity(req, out_file)["score"],
         }
 
     def _adjust(self, req: dict, report: dict) -> dict:
@@ -141,6 +142,36 @@ class ReflectorPipeline:
         weights = {"stroke_consistency": 0.5, "density_homogeneity": 0.5}
         score = sum(terms[k] * weights[k] for k in terms)
         return {"score": round(score, 4), "terms": terms, "weights": weights}
+
+    # ─────────────────────────────────────────────
+    # Fidélité sémantique — tâche 2.5 (P2)
+    # Compare les mots-clés du concept à la desc SVG
+    # ─────────────────────────────────────────────
+    @staticmethod
+    def semantic_fidelity(request: dict, svg_path: Path) -> dict:
+        tree = etree.parse(str(svg_path))
+        root = tree.getroot()
+        NS = {"svg": "http://www.w3.org/2000/svg"}
+
+        desc_el = root.find(".//svg:desc", NS)
+        desc_text = (desc_el.text or "").lower() if desc_el is not None else ""
+        title_el = root.find(".//svg:title", NS)
+        title_text = (title_el.text or "").lower() if title_el is not None else ""
+
+        concept_words = set(request.get("concept", "").lower().split())
+        context_words = set(request.get("context", "").lower().split())
+        query_words = concept_words | context_words
+
+        svg_words = set(desc_text.split()) | set(title_text.split())
+
+        if not query_words:
+            return {"score": 1.0, "matched": [], "missing": []}
+
+        matched = query_words & svg_words
+        missing = query_words - svg_words
+        score = len(matched) / len(query_words) if query_words else 1.0
+
+        return {"score": round(score, 4), "matched": sorted(matched), "missing": sorted(missing)}
 
     @staticmethod
     def _homogeneity(values: list[float]) -> float:
