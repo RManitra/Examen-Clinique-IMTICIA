@@ -20,9 +20,9 @@
 | 1.1 | Corriger `config/prompts.yaml` : supprimer les valeurs hardcodées | P0 | ⬜ | viewBox, stroke-width, etc. doivent être chargés dynamiquement depuis `brand-guidelines.md` |
 | 1.2 | Corriger `generator.py` : supprimer les couleurs hardcodées (`self.yellow`, `self.orange`, etc.) | P0 | ⬜ | Les couleurs doivent venir de `brand_parser.parse_guidelines()` |
 | 1.3 | Corriger `parser.py` : extraire les `required_colors` depuis le markdown | P0 | ⬜ | Actuellement retourne toutes les couleurs sans distinction |
-| 1.4 | Corriger `parser.py` : parser le `stroke-linecap` et `stroke-linejoin` depuis le markdown | P0 | ⬜ | Valeurs actuellement fixées à `"round"` en dur |
-| 1.5 | Corriger `parser.py` : extraire `max_colors` depuis le markdown | P0 | ⬜ | Actuellement fixé à 4 en dur |
-| 1.6 | Corriger `parser.py` : parser les balises interdites depuis le markdown | P0 | ⬜ | Les forbidden tags doivent être dynamiques |
+| 1.4 | Corriger `parser.py` : parser le `stroke-linecap` et `stroke-linejoin` depuis le markdown | P0 | ✅ | Extraits dynamiquement via regex |
+| 1.5 | Corriger `parser.py` : extraire `max_colors` depuis le markdown | P0 | ✅ | Extrait dynamiquement via regex |
+| 1.6 | Corriger `parser.py` : parser les balises interdites depuis le markdown | P0 | 🔶 | Regex implémenté mais retourne [] — ne matche pas la prose du markdown, besoin d'ajustement |
 | 1.7 | Implémenter un vrai fallback dans `generator.py` pour les concepts inconnus | P0 | ⬜ | `_generate_generic()` est trop basique |
 | 1.8 | Tester `generate.py` avec un concept non public (ex: "intelligence artificielle") | P0 | ⬜ | Vérifier que le SVG produit est valide |
 | 1.9 | Tester avec Inkscape installé pour valider la zone utile | P0 | ⬜ | `--xml-only` masque les erreurs d'emprise |
@@ -35,12 +35,12 @@
 
 | # | Tâche | Priorité | Statut | Notes |
 |---|-------|----------|--------|-------|
-| 2.1 | Implémenter la boucle `while not valid` dans `reflector.py` | P0 | ⬜ | Régénérer en cas d'échec de validation |
-| 2.2 | Ajouter un compteur d'itérations max (ex: 5) | P0 | ⬜ | Éviter les boucles infinies |
-| 2.3 | Logger chaque itération (numéro, erreur, SVG produit) | P1 | ⬜ | Traçabilité pour le README |
-| 2.4 | Implémenter un ajustement paramétrique après échec | P1 | ⬜ | Ex: décaler des coordonnées, ajuster les rayons |
+| 2.1 | Implémenter la boucle `while not valid` dans `reflector.py` | P0 | ✅ | `_generate_with_refine()` avec `for i in range(max_iter)` |
+| 2.2 | Ajouter un compteur d'itérations max (ex: 5) | P0 | ✅ | `max_iter=5` en paramètre du constructeur |
+| 2.3 | Logger chaque itération (numéro, erreur, SVG produit) | P1 | ✅ | `history` dans le retour avec iter, valid, errors |
+| 2.4 | Implémenter un ajustement paramétrique après échec | P1 | 🔶 | `_adjust()` crée des hints mais `generate_icon()` ne les lit pas — no-op |
 | 2.5 | Ajouter un scoring de fidélité sémantique | P2 | ⬜ | Mesurer si le SVG correspond au concept |
-| 2.6 | Ajouter un scoring de cohérence de collection | P2 | ⬜ | `Consistency(S) = f(palette, trait, densité, géométrie, complexité, style)` |
+| 2.6 | Ajouter un scoring de cohérence de collection | P2 | ✅ | `collection_consistency()` avec score stroke + densité via `_homogeneity()` |
 
 ---
 
@@ -50,13 +50,13 @@
 
 | # | Tâche | Priorité | Statut | Notes |
 |---|-------|----------|--------|-------|
-| 3.1 | Analyser les 5 SVG de référence pour extraire le vocabulaire formel | P1 | ⬜ | Types de formes, proportions, patterns |
+| 3.1 | Analyser les 5 SVG de référence pour extraire le vocabulaire formel | P1 | ✅ | `parse_references()` extrait couleurs, formes, stroke-widths, viewBox par SVG |
 | 3.2 | Créer une bibliothèque de formes de base (path, circle, rect, etc.) | P1 | ⬜ | Composants réutilisables |
 | 3.3 | Implémenter un système de DSL graphique intermédiaire (JSON → SVG) | P1 | ⬜ | Représentation structurée avant conversion |
 | 3.4 | Implémenter un mapping concept → formes sémantiques | P1 | ⬜ | Ex: "sécurité" → bouclier, cadenas, clé |
 | 3.5 | Implémenter un système de composition (superposition, alignement) | P1 | ⬜ | Assembler les formes en icône cohérente |
 | 3.6 | Tester avec des concepts secrets maison (ex: "musique", "cuisine", "transport") | P1 | ⬜ | Vérifier la généralisation |
-| 3.7 | Tester avec une charte variante (nouvelles couleurs, nouveaux SVG) | P1 | ⬜ | Vérifier que le code ne dépend pas de la charte publique |
+| 3.7 | Tester avec une charte variante (nouvelles couleurs, nouveaux SVG) | P1 | ✅ | Test `test_generalization_to_unknown_charte` couvre ce cas |
 
 ---
 
@@ -66,8 +66,8 @@
 
 | # | Tâche | Priorité | Statut | Notes |
 |---|-------|----------|--------|-------|
-| 4.1 | Extraire les métriques de chaque icône (couleurs utilisées, nombre de formes, surface jaune/orange) | P1 | ⬜ | Pour comparaison inter-icônes |
-| 4.2 | Calculer un score de cohérence intra-collection | P1 | ⬜ | Écart-type des métriques entre icônes |
+| 4.1 | Extraire les métriques de chaque icône (couleurs utilisées, nombre de formes, surface jaune/orange) | P1 | ✅ | `measure_svg()` extrait strokes, primitives, shape_vocab |
+| 4.2 | Calculer un score de cohérence intra-collection | P1 | ✅ | `collection_consistency()` avec `_homogeneity()` (coefficient de variation) |
 | 4.3 | Ajuster les icônes pour réduire la variance | P2 | ⬜ | Normaliser les proportions |
 | 4.4 | Valider la cohérence visuellement (comparaison par paires) | P2 | ⬜ | Test humain |
 
@@ -125,8 +125,8 @@
 | 7.4 | Vérifier que `run.sh` fonctionne | P0 | ⬜ | `bash run.sh --input ... --output ...` |
 | 7.5 | Vérifier que le dépôt cloné dans un dossier vierge produit les bons SVG | P0 | ⬜ | Test de reproductibilité |
 | 7.6 | Fixer les graines aléatoires si applicable | P0 | ⬜ | Reproductibilité |
-| 7.7 | Supprimer les fichiers `.pyc` et `__pycache__` | P1 | ⬜ | Nettoyage |
-| 7.8 | Ajouter un `.gitignore` propre | P1 | ⬜ | Exclure `__pycache__/`, `*.pyc`, `.env`, etc. |
+| 7.7 | Supprimer les fichiers `.pyc` et `__pycache__` | P1 | ✅ | Retirés du tracking git + .gitignore configuré |
+| 7.8 | Ajouter un `.gitignore` propre | P1 | ✅ | Exclut `.venv/`, `__pycache__/`, `*.pyc`, `.env`, etc. |
 
 ---
 
@@ -148,13 +148,13 @@
 
 ## Résumé par priorité
 
-| Priorité | Nombre de tâches |
-|----------|-----------------|
-| P0 | 18 |
-| P1 | 31 |
-| P2 | 9 |
-| P3 | 0 |
-| **Total** | **58** |
+| Priorité | Total | Fait | Reste |
+|----------|-------|------|-------|
+| P0 | 18 | 6 | 12 |
+| P1 | 31 | 11 | 20 |
+| P2 | 9 | 0 | 9 |
+| P3 | 0 | 0 | 0 |
+| **Total** | **58** | **17** | **41** |
 
 ---
 
