@@ -8,10 +8,30 @@ class IconGenerator:
         self.brand_style = brand_style
 
         colors = brand_style.get("allowed_colors") or ["#111827"]
-        # Convention : 1ère couleur = primaire/traits, 2e = accent 1, 3e = accent 2.
+        required = brand_style.get("required_colors") or []
+        accents = brand_style.get("accent_colors") or []
+
+        # stroke_color = la couleur la plus sombre pour les traits
         self.stroke_color = colors[0]
-        self.primary = colors[min(1, len(colors) - 1)]
-        self.accent = colors[min(2, len(colors) - 1)]
+
+        # primary = couleur requise (ex: jaune dominant) ou sinon la 2e de la palette
+        if required:
+            self.primary = required[0]
+        else:
+            self.primary = colors[min(1, len(colors) - 1)]
+
+        # accent = couleur d'accent depuis la charte, ou sinon la 1re non-stroke non-primary
+        if accents:
+            self.accent = accents[0]
+        else:
+            self.accent = None
+            for c in colors:
+                if c != self.stroke_color and c != self.primary:
+                    self.accent = c
+                    break
+            if self.accent is None:
+                self.accent = colors[min(2, len(colors) - 1)]
+
         self.white = "#FFFFFF" if "#FFFFFF" in colors else colors[-1]
 
         self.view_box = brand_style.get("view_box") or "0 0 24 24"
