@@ -2,13 +2,45 @@
 
 from pathlib import Path
 
+
 class IconGenerator:
     def __init__(self, brand_style: dict):
         self.brand_style = brand_style
-        self.yellow = "#FFD21E"
-        self.orange = "#FF9D00"
-        self.dark = "#111827"
-        self.white = "#FFFFFF"
+
+        colors = brand_style.get("allowed_colors") or ["#111827"]
+        # Convention : 1ère couleur = primaire/traits, 2e = accent 1, 3e = accent 2.
+        self.stroke_color = colors[0]
+        self.primary = colors[min(1, len(colors) - 1)]
+        self.accent = colors[min(2, len(colors) - 1)]
+        self.white = "#FFFFFF" if "#FFFFFF" in colors else colors[-1]
+
+        self.view_box = brand_style.get("view_box") or "0 0 24 24"
+        self.stroke_width = brand_style.get("stroke_width") or 1.5
+        self.linecap = brand_style.get("stroke_linecap") or "round"
+        self.linejoin = brand_style.get("stroke_linejoin") or "round"
+
+        # Toutes les formes ci-dessous sont dessinées sur une grille interne
+        # fixe de 64x64 (plus simple à composer). On calcule le facteur
+        # d'échelle nécessaire pour que ce dessin tienne exactement dans le
+        # viewBox réel de la charte, quel qu'il soit (24x24, 128x128, ...).
+        self._INTERNAL_SIZE = 64.0
+        try:
+            _, _, vb_w, vb_h = (float(v) for v in self.view_box.split())
+        except (ValueError, AttributeError):
+            vb_w = vb_h = self._INTERNAL_SIZE
+        self._scale = min(vb_w, vb_h) / self._INTERNAL_SIZE
+
+    def _svg_open(self, title: str, desc: str) -> str:
+        compensated_stroke = self.stroke_width / self._scale if self._scale else self.stroke_width
+        return (
+            f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{self.view_box}" '
+            f'role="img" aria-labelledby="title desc">\n'
+            f'  <title id="title">{title}</title>\n'
+            f'  <desc id="desc">{desc}</desc>\n'
+            f'  <g transform="scale({self._scale})" '
+            f'stroke="{self.stroke_color}" stroke-width="{compensated_stroke:.3f}" '
+            f'stroke-linecap="{self.linecap}" stroke-linejoin="{self.linejoin}">'
+        )
 
     def generate_icon(self, request: dict) -> str:
         concept_id = request.get("id", "").lower()
@@ -29,72 +61,54 @@ class IconGenerator:
             return self._generate_generic(concept_id, concept_title, context)
 
     def _generate_cloud(self, title: str, desc: str) -> str:
-        return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
-  <title id="title">{title}</title>
-  <desc id="desc">{desc}</desc>
-  <g stroke="{self.dark}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M18 46h28a12 12 0 0 0 2-23.8 14 14 0 0 0-26.4-4.2A11 11 0 0 0 18 46z" fill="{self.yellow}"/>
+        return f'''{self._svg_open(title, desc)}
+    <path d="M18 46h28a12 12 0 0 0 2-23.8 14 14 0 0 0-26.4-4.2A11 11 0 0 0 18 46z" fill="{self.primary}"/>
     <path d="M26 35h12M32 29v12" fill="none"/>
-    <circle cx="48" cy="22" r="3" fill="{self.orange}" stroke="none"/>
+    <circle cx="48" cy="22" r="3" fill="{self.accent}" stroke="none"/>
   </g>
 </svg>'''
 
     def _generate_security(self, title: str, desc: str) -> str:
-        return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
-  <title id="title">{title}</title>
-  <desc id="desc">{desc}</desc>
-  <g stroke="{self.dark}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M32 7 12 15v16c0 14.5 9.8 23 20 26 10.2-3 20-11.5 20-26V15z" fill="{self.yellow}"/>
-    <rect x="23" y="27" width="18" height="15" rx="3" fill="{self.orange}"/>
+        return f'''{self._svg_open(title, desc)}
+    <path d="M32 7 12 15v16c0 14.5 9.8 23 20 26 10.2-3 20-11.5 20-26V15z" fill="{self.primary}"/>
+    <rect x="23" y="27" width="18" height="15" rx="3" fill="{self.accent}"/>
     <path d="M27 27v-5a5 5 0 0 1 10 0v5" fill="none"/>
     <circle cx="32" cy="33.5" r="1.5" fill="{self.white}" stroke="none"/>
   </g>
 </svg>'''
 
     def _generate_database(self, title: str, desc: str) -> str:
-        return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
-  <title id="title">{title}</title>
-  <desc id="desc">{desc}</desc>
-  <g stroke="{self.dark}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 16c0-4.4 9-8 20-8s20 3.6 20 8v32c0 4.4-9 8-20 8s-20-3.6-20-8z" fill="{self.yellow}"/>
+        return f'''{self._svg_open(title, desc)}
+    <path d="M12 16c0-4.4 9-8 20-8s20 3.6 20 8v32c0 4.4-9 8-20 8s-20-3.6-20-8z" fill="{self.primary}"/>
     <path d="M12 24c0 4.4 9 8 20 8s20-3.6 20-8" fill="none"/>
     <path d="M12 36c0 4.4 9 8 20 8s20-3.6 20-8" fill="none"/>
-    <ellipse cx="32" cy="16" rx="20" ry="8" fill="{self.orange}"/>
+    <ellipse cx="32" cy="16" rx="20" ry="8" fill="{self.accent}"/>
   </g>
 </svg>'''
 
     def _generate_collaboration(self, title: str, desc: str) -> str:
-        return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
-  <title id="title">{title}</title>
-  <desc id="desc">{desc}</desc>
-  <g stroke="{self.dark}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="21" cy="20" r="7" fill="{self.yellow}"/>
-    <circle cx="43" cy="20" r="7" fill="{self.yellow}"/>
-    <path d="M9 49c0-8 6-13 14-13h3" fill="{self.yellow}"/>
-    <path d="M55 49c0-8-6-13-14-13h-3" fill="{self.yellow}"/>
-    <circle cx="32" cy="32" r="8" fill="{self.orange}"/>
+        return f'''{self._svg_open(title, desc)}
+    <circle cx="21" cy="20" r="7" fill="{self.primary}"/>
+    <circle cx="43" cy="20" r="7" fill="{self.primary}"/>
+    <path d="M9 49c0-8 6-13 14-13h3" fill="{self.primary}"/>
+    <path d="M55 49c0-8-6-13-14-13h-3" fill="{self.primary}"/>
+    <circle cx="32" cy="32" r="8" fill="{self.accent}"/>
     <path d="M28 32l3 3 5-5" fill="none"/>
   </g>
 </svg>'''
 
     def _generate_deployment(self, title: str, desc: str) -> str:
-        return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
-  <title id="title">{title}</title>
-  <desc id="desc">{desc}</desc>
-  <g stroke="{self.dark}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M32 7c-9 0-16 10-16 22 0 8 4 14 7 17l9 9 9-9c3-3 7-9 7-17 0-12-7-22-16-22z" fill="{self.yellow}"/>
+        return f'''{self._svg_open(title, desc)}
+    <path d="M32 7c-9 0-16 10-16 22 0 8 4 14 7 17l9 9 9-9c3-3 7-9 7-17 0-12-7-22-16-22z" fill="{self.primary}"/>
     <circle cx="32" cy="25" r="6" fill="{self.white}"/>
-    <path d="M26 50l6 8 6-8" fill="{self.orange}"/>
+    <path d="M26 50l6 8 6-8" fill="{self.accent}"/>
   </g>
 </svg>'''
 
     def _generate_generic(self, concept_id: str, title: str, desc: str) -> str:
-        return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
-  <title id="title">{title}</title>
-  <desc id="desc">{desc}</desc>
-  <g stroke="{self.dark}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="12" y="12" width="40" height="40" rx="10" fill="{self.yellow}"/>
-    <circle cx="32" cy="32" r="12" fill="{self.orange}"/>
+        return f'''{self._svg_open(title, desc)}
+    <rect x="12" y="12" width="40" height="40" rx="10" fill="{self.primary}"/>
+    <circle cx="32" cy="32" r="12" fill="{self.accent}"/>
     <path d="M26 32h12M32 26v12" fill="none"/>
   </g>
 </svg>'''
