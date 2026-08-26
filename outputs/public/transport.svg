@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
-  <title id="title">Transport</title>
-  <desc id="desc">Déplacement et logistique</desc>
-  <g transform="scale(1.0)" stroke="#111827" stroke-width="2.500" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M32 10 Q41.0 19.0 39.2 33.4 L24.8 33.4 Q23.0 19.0 32 10 z" fill="#FFD21E"/>
-    <circle cx="32" cy="24.4" r="2.6999999999999997" fill="#FFFFFF" stroke="none"/>
-    <path d="M32 44.0 L29.2 48.8 L30.8 48.8 L30.8 52.0 L33.2 52.0 L33.2 48.8 L34.8 48.8 z" fill="#FF9D00"/>
-  </g>
-</svg>

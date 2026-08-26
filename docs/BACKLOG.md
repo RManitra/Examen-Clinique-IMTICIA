@@ -123,12 +123,12 @@
 
 | #   | Tâche                                                                                  | Priorité | Statut | Notes                                                                                |
 | --- | -------------------------------------------------------------------------------------- | -------- | ------ | ------------------------------------------------------------------------------------ |
-| 7.1 | Vérifier que `manifest.json` est conforme à `submission-template/manifest.schema.json` | P0       | ⬜     |                                                                                      |
-| 7.2 | Vérifier que tous les SVG sont dans `outputs/public/`                                  | P0       | ⬜     | Un `<id>.svg` par requête                                                            |
-| 7.3 | Vérifier que `generate.py` fonctionne depuis la racine du dépôt                        | P0       | ⬜     | `python generate.py --input benchmark/public-concepts.json --output outputs/public/` |
-| 7.4 | Vérifier que `run.sh` fonctionne                                                       | P0       | ⬜     | `bash run.sh --input ... --output ...`                                               |
-| 7.5 | Vérifier que le dépôt cloné dans un dossier vierge produit les bons SVG                | P0       | ⬜     | Test de reproductibilité                                                             |
-| 7.6 | Fixer les graines aléatoires si applicable                                             | P0       | ⬜     | Reproductibilité                                                                     |
+| 7.1 | Vérifier que `manifest.json` est conforme à `submission-template/manifest.schema.json` | P0       | ✅     | Corrigé : 2 membres, bibliothèques à jour, conforme au schéma                          |
+| 7.2 | Vérifier que tous les SVG sont dans `outputs/public/`                                  | P0       | ✅     | 5 SVGs = 5 requêtes, SVGs test supprimés                                                 |
+| 7.3 | Vérifier que `generate.py` fonctionne depuis la racine du dépôt                        | P0       | ✅     | Testé et validé                                                                           |
+| 7.4 | Vérifier que `run.sh` fonctionne                                                       | P0       | ✅     | Testé et validé                                                                           |
+| 7.5 | Vérifier que le dépôt cloné dans un dossier vierge produit les bons SVG                | P0       | ✅     | Clone dans /tmp/test-clone, SVGs identiques                                               |
+| 7.6 | Fixer les graines aléatoires si applicable                                             | P0       | ✅     | Aucun random dans le code, 100% déterministe                                              |
 | 7.7 | Supprimer les fichiers `.pyc` et `__pycache__`                                         | P1       | ✅     | Retirés du tracking git + .gitignore configuré                                       |
 | 7.8 | Ajouter un `.gitignore` propre                                                         | P1       | ✅     | Exclut `.venv/`, `__pycache__/`, `*.pyc`, `.env`, etc.                               |
 
@@ -154,11 +154,11 @@
 
 | Priorité  | Total  | Fait   | Reste  |
 | --------- | ------ | ------ | ------ |
-| P0 | 21 | 16 | 5 |
+| P0 | 21 | 21 | 0 |
 | P1        | 33     | 30     | 3      |
 | P2        | 9      | 6      | 3      |
 | P3        | 0      | 0      | 0      |
-| **Total** | **63** | **52** | **11** |
+| **Total** | **63** | **58** | **5** |
 
 ---
 
