@@ -20,8 +20,8 @@ def main():
 
     # 1. Analyse dynamique de la charte graphique et des références
     brand_parser = BrandParser(args.guidelines, args.references)
-    brand_style = brand_parser.parse_guidelines()
-    references_data = brand_parser.parse_references()
+    analysis = brand_parser.analyze()
+    brand_style = analysis["guidelines"]
 
     print(f"[IconForge AI] Charte analysée: {len(brand_style['allowed_colors'])} couleurs autorisées.")
 

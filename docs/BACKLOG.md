@@ -26,8 +26,8 @@
 | 1.7      | Implémenter un vrai fallback dans `generator.py` pour les concepts inconnus                          | P0       | ⬜     | `_generate_generic()` est trop basique (rect+circle+croix)                                                                                                                                     |
 | 1.8      | Tester `generate.py` avec un concept non public (ex: "intelligence artificielle")                    | P0       | ⬜     | Vérifier que le SVG produit est valide                                                                                                                                                         |
 | 1.9      | Tester avec Inkscape installé pour valider la zone utile                                             | P0       | ⬜     | `--xml-only` masque les erreurs d'emprise                                                                                                                                                      |
-| **1.10** | **[BUG B1] Corriger `generate.py` : utiliser `analyze()` au lieu de `parse_guidelines()`**           | **P0**   | ⬜     | **`parse_guidelines()` retourne `stroke_width=None` → fallback 1.5 → tous les SVG échouent (validator attend 2.5)**                                                                            |
-| **1.11** | **[BUG B2] Corriger regex `STROKE_WIDTH_PATTERN` pour matcher "contours sombres de \`2.5\` unités"** | **P0**   | ⬜     | **Le pattern actuel exige préfixe `stroke-width:` ou `largeur de trait:` — il faut ajouter "unités", "unité", "contours", "épaisseur"**                                                        |
+| **1.10** | **[BUG B1] Corriger `generate.py` : utiliser `analyze()` au lieu de `parse_guidelines()`** | **P0** | ✅ | **`generate.py` utilise maintenant `analyze()` qui réconcilie `stroke_width` depuis les références** |
+| **1.11** | **[BUG B2] Corriger regex `STROKE_WIDTH_PATTERN` pour matcher "contours sombres de \`2.5\` unités"** | **P0** | ✅ | **Regex élargie pour matcher "contours", "épaisseur", "trait" + chiffre + "unités"** |
 | **1.12** | **[BUG B3] Corriger l'ordre des couleurs dans le generator pour utiliser `#FFD21E` comme primaire** | **P0** | ✅ | **Generator utilise `required_colors[0]` comme `primary` et `accent_colors[0]` comme `accent` — Mapping correct : jaune→primary, orange→accent, encre→stroke** |
 
 ---
@@ -154,11 +154,11 @@
 
 | Priorité  | Total  | Fait   | Reste  |
 | --------- | ------ | ------ | ------ |
-| P0 | 21 | 11 | 10 |
+| P0 | 21 | 13 | 8 |
 | P1        | 33     | 11     | 22     |
 | P2        | 9      | 0      | 9      |
 | P3        | 0      | 0      | 0      |
-| **Total** | **63** | **22** | **41** |
+| **Total** | **63** | **24** | **39** |
 
 ---
 

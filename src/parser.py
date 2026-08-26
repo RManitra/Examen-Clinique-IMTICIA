@@ -20,7 +20,10 @@ VIEWBOX_PATTERN = re.compile(
 )
 
 STROKE_WIDTH_PATTERN = re.compile(
-    r"(?:stroke-width|largeur(?: de trait)?)\s*[=:]\s*[\"']?([0-9]+(?:\.[0-9]+)?)",
+    r"(?:stroke-width|largeur(?: de trait)?|contours?|épaisseur(?:\s+de\s+trait)?|trait)"
+    r"(?:[^0-9`]{0,40})"
+    r"[`\"']?([0-9]+(?:\.[0-9]+)?)[`\"']?"
+    r"(?:\s*(?:unités?|unit|px))?",
     re.IGNORECASE,
 )
 
