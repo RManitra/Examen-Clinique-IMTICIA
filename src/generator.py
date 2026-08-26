@@ -78,12 +78,7 @@ class IconGenerator:
         elif concept_id == "deployment":
             return self._generate_deployment(concept_title, context)
         else:
-            svg_content = self._generate_generic(concept_id, concept_title, context)
-            out_dir = Path("outputs/public")
-            out_dir.mkdir(parents=True, exist_ok=True)
-            out_path = out_dir / f"{concept_id}.svg"
-            out_path.write_text(svg_content, encoding="utf-8")
-            return svg_content
+            return self._generate_generic(concept_id, concept_title, context)
 
     def _generate_cloud(self, title: str, desc: str) -> str:
         return f'''{self._svg_open(title, desc)}
@@ -130,14 +125,13 @@ class IconGenerator:
   </g>
 </svg>'''
 
-    def _generate_generic(self, concept: str, specs: dict) -> str:
-        viewbox = specs.get("view_box") or "0 0 64 64"
-        colors = specs.get("allowed_colors") or ["#111827", "#FF9D00"]
-        stroke = specs.get("stroke_width") or 2.5
-        safe = specs.get("safe_zone") or {"x_min": 5, "x_max": 59, "y_min": 5, "y_max": 59}
-        fill = colors[0] if len(colors) > 0 else "#111827"
-        stroke_c = colors[1] if len(colors) > 1 else "#FF9D00"
-        return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="{viewbox}" width="64" height="64">
-  <rect x="{safe['x_min']}" y="{safe['y_min']}" width="{safe['x_max']-safe['x_min']}" height="{safe['y_max']-safe['y_min']}" fill="{fill}" stroke="{stroke_c}" stroke-width="{stroke}" rx="8" ry="8"/>
-  <circle cx="32" cy="32" r="10" fill="none" stroke="{stroke_c}" stroke-width="{stroke}"/>
+    def _generate_generic(self, concept_id: str, title: str, desc: str) -> str:
+        safe = self.brand_style.get("safe_zone") or {"x_min": 5, "x_max": 59, "y_min": 5, "y_max": 59}
+        cx = (safe["x_min"] + safe["x_max"]) / 2
+        cy = (safe["y_min"] + safe["y_max"]) / 2
+        r = min(safe["x_max"] - safe["x_min"], safe["y_max"] - safe["y_min"]) / 4
+        return f'''{self._svg_open(title, desc)}
+    <rect x="{safe['x_min']}" y="{safe['y_min']}" width="{safe['x_max']-safe['x_min']}" height="{safe['y_max']-safe['y_min']}" fill="{self.primary}" rx="8"/>
+    <circle cx="{cx}" cy="{cy}" r="{r}" fill="{self.accent}" stroke="none"/>
+  </g>
 </svg>'''
