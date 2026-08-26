@@ -1,10 +1,3 @@
-"""
-[Repartition equipe] Personne 3 - Construction des prompts.
-
-Assemble les messages System/Human envoyes a Gemini pour les deux etapes du
-pipeline : generation des requetes d'icones (JSON), puis generation du SVG.
-"""
-
 import json
 
 from langchain_core.messages import HumanMessage, SystemMessage
