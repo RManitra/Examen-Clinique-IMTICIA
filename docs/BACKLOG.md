@@ -97,23 +97,23 @@
 
 | #    | Tâche                                                       | Priorité | Statut | Notes                                          |
 | ---- | ----------------------------------------------------------- | -------- | ------ | ---------------------------------------------- |
-| 6.1  | Compléter la section "Problématique" du README              | P1       | ⬜     | 2-3 phrases                                    |
-| 6.2  | Compléter la section "Approche adoptée"                     | P1       | ⬜     | Chaîne complète                                |
-| 6.3  | Compléter la section "Résultats obtenus"                    | P1       | ⬜     | Scores sur concepts publics                    |
-| 6.4  | Compléter la section "Installation"                         | P1       | ⬜     | Prérequis + commandes                          |
-| 6.5  | Compléter la section "Exécution"                            | P1       | ⬜     | Exemple reproductible                          |
-| 6.6  | Compléter la section "Architecture du système"              | P1       | ⬜     | Schéma des composants                          |
-| 6.7  | Compléter la section "Formalisation de la charte graphique" | P1       | ⬜     | Palette, géométrie, traits, etc.               |
-| 6.8  | Compléter la section "Stratégie de génération"              | P1       | ⬜     | Concept → SVG                                  |
-| 6.9  | Compléter la section "Évaluation et boucle d'amélioration"  | P1       | ⬜     | Contraintes hard/soft, cohérence, boucle G-E-R |
-| 6.10 | Compléter la section "Résultats et expériences"             | P1       | ⬜     | Tous les tests requis                          |
-| 6.11 | Compléter la section "Manifeste de remise"                  | P1       | ⬜     | `manifest.json` conforme                       |
-| 6.12 | Compléter la section "Vidéo de présentation"                | P1       | ⬜     | 3-5 minutes                                    |
-| 6.13 | Compléter la section "Transparence sur les outils IA"       | P1       | ⬜     | Déclarer tous les outils utilisés              |
-| 6.14 | Compléter la section "Contributions individuelles"          | P1       | ⬜     | Rôles de chaque membre                         |
-| 6.15 | Compléter la section "Limites et améliorations"             | P2       | ⬜     |                                                |
-| 6.16 | Compléter la section "Licence et propriété"                 | P2       | ⬜     |                                                |
-| 6.17 | Remplir `manifest.json` avec les vraies infos d'équipe      | P1       | ⬜     | Min 2 membres                                  |
+| 6.1  | Compléter la section "Problématique" du README              | P1       | ✅     | Rédigé dans README.md                                                  |
+| 6.2  | Compléter la section "Approche adoptée"                     | P1       | ✅     | Chaîne complète 5 étapes rédigée                                      |
+| 6.3  | Compléter la section "Résultats obtenus"                    | P1       | ✅     | 100% conformité, 5 concepts publics, scores                           |
+| 6.4  | Compléter la section "Installation"                         | P1       | ✅     | Prérequis + commandes pip install                                      |
+| 6.5  | Compléter la section "Exécution"                            | P1       | ✅     | Exemples reproductibles generate.py + validate_svg.py                 |
+| 6.6  | Compléter la section "Architecture du système"              | P1       | ✅     | Arbre dépôt + tableau composants                                      |
+| 6.7  | Compléter la section "Formalisation de la charte graphique" | P1       | ✅     | Palette, géométrie, traits, contraintes hard/soft                     |
+| 6.8  | Compléter la section "Stratégie de génération"              | P1       | ✅     | concept → concept_map → shapes → composer → SVG                       |
+| 6.9  | Compléter la section "Évaluation et boucle d'amélioration"  | P1       | ✅     | Boucle G-E-R, scoring, normalize, pairwise                            |
+| 6.10 | Compléter la section "Résultats et expériences"             | P1       | ✅     | Concepts publics + secrets + fallback + charte variante               |
+| 6.11 | Compléter la section "Manifeste de remise"                  | P1       | ✅     | Template JSON prêt à compléter                                        |
+| 6.12 | Compléter la section "Vidéo de présentation"                | P1       | ⬜     | À compléter (lien vidéo)                                              |
+| 6.13 | Compléter la section "Transparence sur les outils IA"       | P1       | ✅     | Template tableaux + déclaration rédigée                               |
+| 6.14 | Compléter la section "Contributions individuelles"          | P1       | ⬜     | À compléter (noms membres)                                            |
+| 6.15 | Compléter la section "Limites et améliorations"             | P2       | ✅     | Limites + améliorations rédigées                                      |
+| 6.16 | Compléter la section "Licence et propriété"                 | P2       | ⬜     | À compléter                                                           |
+| 6.17 | Remplir `manifest.json` avec les vraies infos d'équipe      | P1       | ⬜     | À compléter (noms membres)                                            |
 
 ---
 
@@ -155,10 +155,10 @@
 | Priorité  | Total  | Fait   | Reste  |
 | --------- | ------ | ------ | ------ |
 | P0 | 21 | 16 | 5 |
-| P1        | 33     | 21     | 12     |
-| P2        | 9      | 5      | 4      |
+| P1        | 33     | 30     | 3      |
+| P2        | 9      | 6      | 3      |
 | P3        | 0      | 0      | 0      |
-| **Total** | **63** | **42** | **21** |
+| **Total** | **63** | **52** | **11** |
 
 ---
 
