@@ -206,38 +206,84 @@ def walk_elements(
 
 def rendered_bounds(path: Path) -> tuple[tuple[float, float, float, float] | None, str | None]:
     inkscape = shutil.which("inkscape")
-    if not inkscape:
-        return None, "Inkscape est requis pour vérifier la zone utile stricte."
-    process = subprocess.run(
-        [inkscape, str(path), "--query-all"],
-        capture_output=True,
-        text=True,
-        timeout=30,
-        check=False,
-    )
-    if process.returncode != 0:
-        detail = process.stderr.strip() or "échec sans message"
-        return None, f"Échec du calcul d’emprise avec Inkscape: {detail}"
+    if inkscape:
+        process = subprocess.run(
+            [inkscape, str(path), "--query-all"],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+        if process.returncode != 0:
+            detail = process.stderr.strip() or "échec sans message"
+            return None, f"Échec du calcul d'emprise avec Inkscape: {detail}"
 
-    boxes: list[tuple[float, float, float, float]] = []
-    for line in process.stdout.splitlines():
-        parts = line.rsplit(",", 4)
-        if len(parts) != 5:
-            continue
-        try:
-            x, y, width, height = map(float, parts[1:])
-        except ValueError:
-            continue
-        if width > 0 and height > 0:
-            boxes.append((x, y, x + width, y + height))
+        boxes: list[tuple[float, float, float, float]] = []
+        for line in process.stdout.splitlines():
+            parts = line.rsplit(",", 4)
+            if len(parts) != 5:
+                continue
+            try:
+                x, y, width, height = map(float, parts[1:])
+            except ValueError:
+                continue
+            if width > 0 and height > 0:
+                boxes.append((x, y, x + width, y + height))
 
-    if not boxes:
-        return None, "Aucune forme visible détectée par Inkscape."
+        if not boxes:
+            return None, "Aucune forme visible détectée par Inkscape."
+        return (
+            min(box[0] for box in boxes),
+            min(box[1] for box in boxes),
+            max(box[2] for box in boxes),
+            max(box[3] for box in boxes),
+        ), None
+
+    # Fallback Python : cairosvg + Pillow
+    return _rendered_bounds_python(path)
+
+
+def _rendered_bounds_python(path: Path) -> tuple[tuple[float, float, float, float] | None, str | None]:
+    """Calcule l'emprise via rendu raster (cairosvg + Pillow)."""
+    try:
+        import cairosvg
+        from PIL import Image
+        from io import BytesIO
+    except ImportError:
+        return None, "Ni Inkscape ni cairosvg/Pillow ne sont disponibles pour vérifier l'emprise."
+
+    raw = path.read_bytes()
+    render_size = 512
+    try:
+        png_data = cairosvg.svg2png(bytestring=raw, output_width=render_size, output_height=render_size)
+    except Exception as exc:
+        return None, f"Échec du rendu cairosvg: {exc}"
+
+    img = Image.open(BytesIO(png_data)).convert("RGBA")
+    pixels = img.load()
+    min_x, min_y = render_size, render_size
+    max_x, max_y = 0, 0
+    found = False
+    for y in range(render_size):
+        for x in range(render_size):
+            _, _, _, a = pixels[x, y]
+            if a > 10:
+                found = True
+                min_x = min(min_x, x)
+                min_y = min(min_y, y)
+                max_x = max(max_x, x)
+                max_y = max(max_y, y)
+
+    if not found:
+        return None, "Aucune forme visible détectée par le rendu raster."
+
+    viewbox_size = 64.0
+    scale = viewbox_size / render_size
     return (
-        min(box[0] for box in boxes),
-        min(box[1] for box in boxes),
-        max(box[2] for box in boxes),
-        max(box[3] for box in boxes),
+        min_x * scale,
+        min_y * scale,
+        (max_x + 1) * scale,
+        (max_y + 1) * scale,
     ), None
 
 

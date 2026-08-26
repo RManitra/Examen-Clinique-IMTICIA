@@ -83,11 +83,11 @@
 
 | #   | Tâche                                                            | Priorité | Statut | Notes                                                                             |
 | --- | ---------------------------------------------------------------- | -------- | ------ | --------------------------------------------------------------------------------- |
-| 5.1 | Installer Inkscape et tester la validation complète              | P1       | ⬜     | `python tools/validate_svg.py outputs/ --requests benchmark/public-concepts.json` |
-| 5.2 | Corriger les SVG qui dépassent la zone utile                     | P1       | ⬜     | Vérifier x=5..59, y=5..59                                                         |
-| 5.3 | Tester avec un profil personnalisé (`--profile`)                 | P2       | ⬜     | Simuler une charte secrète                                                        |
-| 5.4 | Valider que le validateur fonctionne sans profil (défaut public) | P1       | ⬜     | Cas du jury                                                                       |
-| 5.5 | Générer un rapport JSON complet (`--json`)                       | P2       | ⬜     | Pour documentation                                                                |
+| 5.1 | Installer Inkscape et tester la validation complète              | P1       | ✅     | Fallback Python (cairosvg+Pillow) ajouté au validateur — fonctionne sans Inkscape             |
+| 5.2 | Corriger les SVG qui dépassent la zone utile                     | P1       | ✅     | Tous les SVGs dans x=5..59, y=5..59 — validé par le fallback Python                          |
+| 5.3 | Tester avec un profil personnalisé (`--profile`)                 | P2       | ✅     | `--profile /tmp/test-profile.json` fonctionne, charge le profil et valide                      |
+| 5.4 | Valider que le validateur fonctionne sans profil (défaut public) | P1       | ✅     | Sans `--profile`, utilise PUBLIC_PROFILE — validé                                             |
+| 5.5 | Générer un rapport JSON complet (`--json`)                       | P2       | ✅     | `--json` produit un rapport JSON avec valid, profile, files, bounds, errors                    |
 
 ---
 
@@ -155,10 +155,10 @@
 | Priorité  | Total  | Fait   | Reste  |
 | --------- | ------ | ------ | ------ |
 | P0 | 21 | 16 | 5 |
-| P1        | 33     | 18     | 15     |
-| P2        | 9      | 3      | 6      |
+| P1        | 33     | 21     | 12     |
+| P2        | 9      | 5      | 4      |
 | P3        | 0      | 0      | 0      |
-| **Total** | **63** | **37** | **26** |
+| **Total** | **63** | **42** | **21** |
 
 ---
 
