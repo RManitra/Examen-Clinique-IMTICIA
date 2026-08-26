@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Xylophone</title>
+  <desc id="desc">Instrument à percussion</desc>
+  <g transform="scale(1.0)" stroke="#111827" stroke-width="2.500" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="6.25" y="6.25" width="51.5" height="51.5" fill="#FFD21E" rx="8"/>
+    <circle cx="32.0" cy="32.0" r="12.25" fill="#FF9D00" stroke="none"/>
+  </g>
+</svg>

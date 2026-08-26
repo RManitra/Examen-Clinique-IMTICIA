@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Musique</title>
+  <desc id="desc">Art sonore et rythme</desc>
+  <g transform="scale(1.0)" stroke="#111827" stroke-width="2.500" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="26.0" cy="34.0" rx="7.0" ry="5.0" fill="#FFD21E" stroke="none"/>
+    <path d="M33.0 34.0 v-22.0" fill="none"/>
+    <path d="M32 36.8 Q25.6 38.4 25.6 45.6 L24 48.0 L40 48.0 L38.4 45.6 Q38.4 38.4 32 36.8 z" fill="#FF9D00"/>
+    <circle cx="32" cy="49.6" r="1.2" fill="#FF9D00" stroke="none"/>
+  </g>
+</svg>

@@ -2,6 +2,8 @@
 
 from pathlib import Path
 
+from src.composer import compose_icon, resolve_concept
+
 
 class IconGenerator:
     def __init__(self, brand_style: dict):
@@ -136,12 +138,29 @@ class IconGenerator:
 </svg>'''
 
     def _generate_generic(self, concept_id: str, title: str, desc: str) -> str:
+        """Génère une icône pour un concept inconnu via le moteur de composition."""
+        layout = resolve_concept(concept_id)
+        if layout:
+            inner = compose_icon(
+                layout,
+                primary=self.primary,
+                accent=self.accent,
+                stroke_color=self.stroke_color,
+                stroke_width=self.stroke_width,
+            )
+            return f'''{self._svg_open(title, desc)}
+    {inner}
+  </g>
+</svg>'''
+
+        # Fallback : rectangle + cercle si aucun mapping trouvé
         safe = self.brand_style.get("safe_zone") or {"x_min": 5, "x_max": 59, "y_min": 5, "y_max": 59}
+        sw = self.stroke_width / 2  # compenser le stroke
         cx = (safe["x_min"] + safe["x_max"]) / 2
         cy = (safe["y_min"] + safe["y_max"]) / 2
-        r = min(safe["x_max"] - safe["x_min"], safe["y_max"] - safe["y_min"]) / 4
+        r = min(safe["x_max"] - safe["x_min"], safe["y_max"] - safe["y_min"]) / 4 - sw
         return f'''{self._svg_open(title, desc)}
-    <rect x="{safe['x_min']}" y="{safe['y_min']}" width="{safe['x_max']-safe['x_min']}" height="{safe['y_max']-safe['y_min']}" fill="{self.primary}" rx="8"/>
+    <rect x="{safe['x_min']+sw}" y="{safe['y_min']+sw}" width="{safe['x_max']-safe['x_min']-2*sw}" height="{safe['y_max']-safe['y_min']-2*sw}" fill="{self.primary}" rx="8"/>
     <circle cx="{cx}" cy="{cy}" r="{r}" fill="{self.accent}" stroke="none"/>
   </g>
 </svg>'''

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Cuisine</title>
+  <desc id="desc">Préparation de plats</desc>
+  <g transform="scale(1.0)" stroke="#111827" stroke-width="2.500" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M32 9.6 Q19.2 12.8 19.2 27.2 L16 32.0 L48 32.0 L44.8 27.2 Q44.8 12.8 32 9.6 z" fill="#FFD21E"/>
+    <circle cx="32" cy="35.2" r="2.4" fill="#FFD21E" stroke="none"/>
+    <path d="M32 48.0 C20.0 41.0 26.0 33.0 32 38.0 C38.0 33.0 44.0 41.0 32 48.0 z" fill="#FF9D00"/>
+  </g>
+</svg>

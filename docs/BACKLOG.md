@@ -55,11 +55,11 @@
 | #   | Tâche                                                                           | Priorité | Statut | Notes                                                                         |
 | --- | ------------------------------------------------------------------------------- | -------- | ------ | ----------------------------------------------------------------------------- |
 | 3.1 | Analyser les 5 SVG de référence pour extraire le vocabulaire formel             | P1       | ✅     | `parse_references()` extrait couleurs, formes, stroke-widths, viewBox par SVG |
-| 3.2 | Créer une bibliothèque de formes de base (path, circle, rect, etc.)             | P1       | ⬜     | Composants réutilisables                                                      |
-| 3.3 | Implémenter un système de DSL graphique intermédiaire (JSON → SVG)              | P1       | ⬜     | Représentation structurée avant conversion                                    |
-| 3.4 | Implémenter un mapping concept → formes sémantiques                             | P1       | ⬜     | Ex: "sécurité" → bouclier, cadenas, clé                                       |
-| 3.5 | Implémenter un système de composition (superposition, alignement)               | P1       | ⬜     | Assembler les formes en icône cohérente                                       |
-| 3.6 | Tester avec des concepts secrets maison (ex: "musique", "cuisine", "transport") | P1       | ⬜     | Vérifier la généralisation                                                    |
+| 3.2 | Créer une bibliothèque de formes de base (path, circle, rect, etc.)             | P1       | ✅     | `src/shapes.py` : 20+ formes (shield, lock, note, gear, star, heart, magnifier, bar_chart, etc.) |
+| 3.3 | Implémenter un système de DSL graphique intermédiaire (JSON → SVG)              | P1       | ✅     | `src/composer.py` : compose_icon() convertit layout DSL → fragment SVG avec rôles couleurs      |
+| 3.4 | Implémenter un mapping concept → formes sémantiques                             | P1       | ✅     | `src/concept_map.py` : ~40 concepts mappés (musique, cuisine, transport, analytics, etc.)       |
+| 3.5 | Implémenter un système de composition (superposition, alignement)               | P1       | ✅     | `composer.py` assemble les formes avec primary/accent/stroke colors                             |
+| 3.6 | Tester avec des concepts secrets maison (ex: "musique", "cuisine", "transport") | P1       | ✅     | 4 concepts secrets testés + fallback inconnu, tous validés (XML + zone utile)                    |
 | 3.7 | Tester avec une charte variante (nouvelles couleurs, nouveaux SVG)              | P1       | ✅     | Test `test_generalization_to_unknown_charte` couvre ce cas                    |
 
 ---
@@ -155,10 +155,10 @@
 | Priorité  | Total  | Fait   | Reste  |
 | --------- | ------ | ------ | ------ |
 | P0 | 21 | 16 | 5 |
-| P1        | 33     | 13     | 20     |
+| P1        | 33     | 18     | 15     |
 | P2        | 9      | 1      | 8      |
 | P3        | 0      | 0      | 0      |
-| **Total** | **63** | **30** | **33** |
+| **Total** | **63** | **35** | **28** |
 
 ---
 
