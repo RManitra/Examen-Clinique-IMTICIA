@@ -102,6 +102,26 @@ class BrandParser:
 
     # -- Extraction charte (markdown) -----------------------------------
 
+    def _extract_required_colors(self, content: str) -> list[str]:
+        """Extrait les couleurs marquées 'principal(e)' ou 'dominant(e)' dans la charte."""
+        required = []
+        for line in content.splitlines():
+            line_lower = line.lower()
+            if "principal" in line_lower or "dominant" in line_lower or "dominante" in line_lower:
+                found = HEX_COLOR_PATTERN.findall(line)
+                required.extend(c.upper() for c in found)
+        return sorted(set(required))
+
+    def _extract_accent_colors(self, content: str) -> list[str]:
+        """Extrait les couleurs marquées 'accent' dans la charte."""
+        accents = []
+        for line in content.splitlines():
+            line_lower = line.lower()
+            if "accent" in line_lower:
+                found = HEX_COLOR_PATTERN.findall(line)
+                accents.extend(c.upper() for c in found)
+        return sorted(set(accents))
+
     def _extract_colors(self, content: str) -> list[str]:
         colors = HEX_COLOR_PATTERN.findall(content)
         return sorted(set(c.upper() for c in colors))
@@ -196,6 +216,8 @@ class BrandParser:
 
         result = {
             "allowed_colors": self._extract_colors(content),
+            "required_colors": self._extract_required_colors(content),
+            "accent_colors": self._extract_accent_colors(content),
             "view_box": self._extract_viewbox(content),
             "safe_zone": safe_zone,
             "safe_min": safe_zone["x_min"] if safe_zone else None,
