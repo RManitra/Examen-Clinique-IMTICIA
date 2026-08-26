@@ -157,16 +157,27 @@ class BrandParser:
         return None
 
     def _extract_forbidden_elements(self, content: str) -> list[str]:
-        section = FORBIDDEN_SECTION_PATTERN.search(content)
-        if not section:
-            return []
-        tokens = FORBIDDEN_TOKEN_PATTERN.findall(section.group(1))
-        # Filtre les mots-outils français qui ne sont pas des noms de balises
-        stopwords = {
-            "de", "la", "le", "les", "des", "un", "une", "et", "ou", "pas",
-            "inferieure", "inférieure", "aucun", "aucune",
-        }
-        return sorted({t.lower() for t in tokens if t.lower() not in stopwords})
+        forbidden = set()
+        keywords = {
+            "image": ["image", "matricielle"],
+            "text": ["texte"],
+            "font": ["police"],
+            "gradient": ["gradient", "dégradé"],
+            "filter": ["filtre"],
+            "mask": ["masque"],
+            "texture": ["texture"],
+            "opacity": ["transparence", "opacité"],
+    }
+
+        for line in content.splitlines():
+            line_lower = line.lower()
+            if any(word in line_lower for word in ["aucun", "aucune", "interdit", "proscrit"]):
+                for key, terms in keywords.items():
+                    if any(t in line_lower for t in terms):
+                        forbidden.add(key)
+
+        return sorted(forbidden)
+    
 
     def _extract_style_rules(self, content: str) -> dict:
         content_lower = content.lower()
@@ -174,6 +185,7 @@ class BrandParser:
             name: any(kw.lower() in content_lower for kw in kws)
             for name, kws in STYLE_RULES.items()
         }
+    
 
     def parse_guidelines(self) -> dict:
         """Analyse complètement brand-guidelines.md et retourne un dict plat,
