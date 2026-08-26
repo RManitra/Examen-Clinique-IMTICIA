@@ -15,6 +15,7 @@ from typing import Optional
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 BACKEND_DIR = Path(__file__).resolve().parent
@@ -33,6 +34,15 @@ OUTPUT_DIR = BACKEND_DIR / "output"
 app = FastAPI(
     title="IconForge API",
     description="Generation d'icones SVG a partir d'une requete en langage naturel, via Gemini.",
+)
+
+# Autoriser les requests depuis le frontend React (dev local sur :3000)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
