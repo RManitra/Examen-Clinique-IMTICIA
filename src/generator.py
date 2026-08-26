@@ -82,9 +82,9 @@ class IconGenerator:
 
     def _generate_cloud(self, title: str, desc: str) -> str:
         return f'''{self._svg_open(title, desc)}
-    <path d="M18 46h28a12 12 0 0 0 2-23.8 14 14 0 0 0-26.4-4.2A11 11 0 0 0 18 46z" fill="{self.primary}"/>
-    <path d="M26 35h12M32 29v12" fill="none"/>
-    <circle cx="48" cy="22" r="3" fill="{self.accent}" stroke="none"/>
+    <path d="M16 46h28a10 10 0 0 0 2-19.8 12 12 0 0 0-22.4-4.2A11 11 0 0 0 16 46z" fill="{self.primary}"/>
+    <path d="M24 35h12M30 29v12" fill="none"/>
+    <circle cx="46" cy="22" r="3" fill="{self.accent}" stroke="none"/>
   </g>
 </svg>'''
 
@@ -121,7 +121,7 @@ class IconGenerator:
         return f'''{self._svg_open(title, desc)}
     <path d="M32 7c-9 0-16 10-16 22 0 8 4 14 7 17l9 9 9-9c3-3 7-9 7-17 0-12-7-22-16-22z" fill="{self.primary}"/>
     <circle cx="32" cy="25" r="6" fill="{self.white}"/>
-    <path d="M26 50l6 8 6-8" fill="{self.accent}"/>
+    <path d="M26 49l6 8 6-8" fill="{self.accent}"/>
   </g>
 </svg>'''
 

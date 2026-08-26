@@ -4,6 +4,6 @@
   <g transform="scale(1.0)" stroke="#111827" stroke-width="2.500" stroke-linecap="round" stroke-linejoin="round">
     <path d="M32 7c-9 0-16 10-16 22 0 8 4 14 7 17l9 9 9-9c3-3 7-9 7-17 0-12-7-22-16-22z" fill="#FFD21E"/>
     <circle cx="32" cy="25" r="6" fill="#FFFFFF"/>
-    <path d="M26 50l6 8 6-8" fill="#FF9D00"/>
+    <path d="M26 49l6 8 6-8" fill="#FF9D00"/>
   </g>
 </svg>

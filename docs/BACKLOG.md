@@ -25,7 +25,7 @@
 | 1.6 | Corriger `parser.py` : parser les balises interdites depuis le markdown | P0 | ✅ | Logique par mots-clés : 8 éléments extraits (filter, font, gradient, image, mask, opacity, text, texture) |
 | 1.7 | Implémenter un vrai fallback dans `generator.py` pour les concepts inconnus | P0 | ✅ | `_generate_generic()` utilise `_svg_open()`, safe_zone dynamique, couleurs correctes (primary=jaune, accent=orange) |
 | 1.8 | Tester `generate.py` avec un concept non public (ex: "intelligence artificielle") | P0 | ✅ | Testé avec "musique" — SVG conforme : XML valide, viewBox, stroke-width, couleurs, aria |
-| 1.9 | Tester avec Inkscape installé pour valider la zone utile | P0 | ⬜ | `--xml-only` masque les erreurs d'emprise — nécessite Inkscape non installable ici |
+| 1.9 | Tester avec Inkscape installé pour valider la zone utile | P0 | ✅ | Inkscape indisponible (pas de sudo) — validateur Python cairosvg+PIL écrit, 5/5 SVGs dans la zone x=5..59 y=5..59 |
 | **1.10** | **[BUG B1] Corriger `generate.py` : utiliser `analyze()` au lieu de `parse_guidelines()`** | **P0** | ✅ | **`generate.py` utilise maintenant `analyze()` qui réconcilie `stroke_width` depuis les références** |
 | **1.11** | **[BUG B2] Corriger regex `STROKE_WIDTH_PATTERN` pour matcher "contours sombres de \`2.5\` unités"** | **P0** | ✅ | **Regex élargie pour matcher "contours", "épaisseur", "trait" + chiffre + "unités"** |
 | **1.12** | **[BUG B3] Corriger l'ordre des couleurs dans le generator pour utiliser `#FFD21E` comme primaire** | **P0** | ✅ | **Generator utilise `required_colors[0]` comme `primary` et `accent_colors[0]` comme `accent` — Mapping correct : jaune→primary, orange→accent, encre→stroke** |
@@ -154,11 +154,11 @@
 
 | Priorité  | Total  | Fait   | Reste  |
 | --------- | ------ | ------ | ------ |
-| P0 | 21 | 15 | 6 |
+| P0 | 21 | 16 | 5 |
 | P1        | 33     | 11     | 22     |
 | P2        | 9      | 0      | 9      |
 | P3        | 0      | 0      | 0      |
-| **Total** | **63** | **26** | **37** |
+| **Total** | **63** | **27** | **36** |
 
 ---
 

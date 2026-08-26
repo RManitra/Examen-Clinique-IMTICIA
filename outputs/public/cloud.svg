@@ -2,8 +2,8 @@
   <title id="title">Cloud</title>
   <desc id="desc">Infrastructure et services informatiques accessibles à distance.</desc>
   <g transform="scale(1.0)" stroke="#111827" stroke-width="2.500" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M18 46h28a12 12 0 0 0 2-23.8 14 14 0 0 0-26.4-4.2A11 11 0 0 0 18 46z" fill="#FFD21E"/>
-    <path d="M26 35h12M32 29v12" fill="none"/>
-    <circle cx="48" cy="22" r="3" fill="#FF9D00" stroke="none"/>
+    <path d="M16 46h28a10 10 0 0 0 2-19.8 12 12 0 0 0-22.4-4.2A11 11 0 0 0 16 46z" fill="#FFD21E"/>
+    <path d="M24 35h12M30 29v12" fill="none"/>
+    <circle cx="46" cy="22" r="3" fill="#FF9D00" stroke="none"/>
   </g>
 </svg>
