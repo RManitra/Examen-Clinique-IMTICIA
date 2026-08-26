@@ -1,0 +1,15 @@
+{
+  "$schema": "./submission-template/manifest.schema.json",
+  "equipe": ["M2 Student"],
+  "methode": "Analyse dynamique de charte + génération vectorielle paramétrique/LLM + boucle itérative Generate-Evaluate-Refine",
+  "modeles": [
+    {
+      "nom": "iconforge-svg-engine",
+      "version": "1.0.0",
+      "local": true
+    }
+  ],
+  "bibliotheques": ["pyyaml", "jinja2"],
+  "services_distants": [],
+  "repli_gratuit": "Générateur paramétrique vectoriel local et boucle de raffinement déterministe"
+}
