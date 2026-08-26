@@ -1,0 +1,12 @@
+{
+  "$schema": "./request.schema.json",
+  "collection_id": "iconforge-public-v1",
+  "requests": [
+    {"id": "cloud", "concept": "Cloud", "context": "Infrastructure et services informatiques accessibles à distance.", "keywords": ["nuage", "service", "infrastructure"]},
+    {"id": "security", "concept": "Sécurité", "context": "Protection des données et des accès numériques.", "keywords": ["protection", "confiance", "accès"]},
+    {"id": "database", "concept": "Base de données", "context": "Stockage structuré et consultation d’informations.", "keywords": ["données", "stockage", "requête"]},
+    {"id": "collaboration", "concept": "Collaboration", "context": "Travail coordonné entre plusieurs personnes ou agents.", "keywords": ["équipe", "partage", "coordination"]},
+    {"id": "deployment", "concept": "Déploiement", "context": "Mise en service reproductible d’une application.", "keywords": ["livraison", "production", "automatisation"]}
+  ]
+}
+
