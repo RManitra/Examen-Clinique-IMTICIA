@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="100%" height="100%">
+  <defs>
+    <clipPath id="ball-clip">
+      <circle cx="32" cy="32" r="26"/>
+    </clipPath>
+  </defs>
+  <ellipse cx="32" cy="58.5" rx="18" ry="2.5" fill="#1A1D20" opacity="0.15"/>
+  <circle cx="32" cy="32" r="26" fill="#FFFFFF"/>
+  <path d="M 32 6 A 26 26 0 0 1 58 32 A 26 26 0 0 1 32 58 A 26 26 0 0 1 12 46 A 26 26 0 0 0 53 31 A 26 26 0 0 0 32 6 Z" fill="#E2E8F0" opacity="0.55"/>
+  <g clip-path="url(#ball-clip)" fill="#1A1D20" stroke="#1A1D20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="32,23 39.5,28.5 36.6,37.5 27.4,37.5 24.5,28.5"/>
+    <polygon points="32,13 24.5,7.5 27.5,-2 36.5,-2 39.5,7.5"/>
+    <polygon points="48.5,25 47,15.5 56,10 63,17.5 57.5,26"/>
+    <polygon points="43,46.5 52,43 58.5,51 51.5,61 38.5,54.5"/>
+    <polygon points="21,46.5 25.5,54.5 12.5,61 5.5,51 12,43"/>
+    <polygon points="15.5,25 6.5,26 1,17.5 8,10 17,15.5"/>
+    <line x1="32" y1="23" x2="32" y2="13"/>
+    <line x1="39.5" y1="28.5" x2="48.5" y2="25"/>
+    <line x1="36.6" y1="37.5" x2="43" y2="46.5"/>
+    <line x1="27.4" y1="37.5" x2="21" y2="46.5"/>
+    <line x1="24.5" y1="28.5" x2="15.5" y2="25"/>
+    <line x1="39.5" y1="7.5" x2="47" y2="15.5"/>
+    <line x1="57.5" y1="26" x2="52" y2="43"/>
+    <line x1="38.5" y1="54.5" x2="25.5" y2="54.5"/>
+    <line x1="12" y1="43" x2="6.5" y2="26"/>
+    <line x1="17" y1="15.5" x2="24.5" y2="7.5"/>
+  </g>
+  <circle cx="32" cy="32" r="26" fill="none" stroke="#1A1D20" stroke-width="2.5"/>
+</svg>
