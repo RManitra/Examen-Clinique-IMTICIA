@@ -18,14 +18,17 @@
 | # | Tâche | Priorité | Statut | Notes |
 |---|-------|----------|--------|-------|
 | 1.1 | Corriger `config/prompts.yaml` : supprimer les valeurs hardcodées | P0 | ⬜ | viewBox, stroke-width, etc. doivent être chargés dynamiquement depuis `brand-guidelines.md` |
-| 1.2 | Corriger `generator.py` : supprimer les couleurs hardcodées (`self.yellow`, `self.orange`, etc.) | P0 | ⬜ | Les couleurs doivent venir de `brand_parser.parse_guidelines()` |
-| 1.3 | Corriger `parser.py` : extraire les `required_colors` depuis le markdown | P0 | ⬜ | Actuellement retourne toutes les couleurs sans distinction |
+| 1.2 | Corriger `generator.py` : supprimer les couleurs hardcodées (`self.yellow`, `self.orange`, etc.) | P0 | ✅ | Couleurs dynamiques via `brand_style["allowed_colors"]`, convention 1ère=stroke, 2e=primary, 3e=accent |
+| 1.3 | Corriger `parser.py` : extraire les `required_colors` depuis le markdown | P0 | ⬜ | ⚠️ **BUG B3** : les couleurs sont triées alphabétiquement, `#FFD21E` (jaune) n'est jamais utilisée comme fill principal — le validator exige `#FFD21E` comme couleur visible |
 | 1.4 | Corriger `parser.py` : parser le `stroke-linecap` et `stroke-linejoin` depuis le markdown | P0 | ✅ | Extraits dynamiquement via regex |
 | 1.5 | Corriger `parser.py` : extraire `max_colors` depuis le markdown | P0 | ✅ | Extrait dynamiquement via regex |
-| 1.6 | Corriger `parser.py` : parser les balises interdites depuis le markdown | P0 | 🔶 | Regex implémenté mais retourne [] — ne matche pas la prose du markdown, besoin d'ajustement |
-| 1.7 | Implémenter un vrai fallback dans `generator.py` pour les concepts inconnus | P0 | ⬜ | `_generate_generic()` est trop basique |
+| 1.6 | Corriger `parser.py` : parser les balises interdites depuis le markdown | P0 | 🔶 | Regex implémentée mais retourne [] — ne matche pas la prose du markdown |
+| 1.7 | Implémenter un vrai fallback dans `generator.py` pour les concepts inconnus | P0 | ⬜ | `_generate_generic()` est trop basique (rect+circle+croix) |
 | 1.8 | Tester `generate.py` avec un concept non public (ex: "intelligence artificielle") | P0 | ⬜ | Vérifier que le SVG produit est valide |
 | 1.9 | Tester avec Inkscape installé pour valider la zone utile | P0 | ⬜ | `--xml-only` masque les erreurs d'emprise |
+| **1.10** | **[BUG B1] Corriger `generate.py` : utiliser `analyze()` au lieu de `parse_guidelines()`** | **P0** | ⬜ | **`parse_guidelines()` retourne `stroke_width=None` → fallback 1.5 → tous les SVG échouent (validator attend 2.5)** |
+| **1.11** | **[BUG B2] Corriger regex `STROKE_WIDTH_PATTERN` pour matcher "contours sombres de \`2.5\` unités"** | **P0** | ⬜ | **Le pattern actuel exige préfixe `stroke-width:` ou `largeur de trait:` — il faut ajouter "unités", "unité", "contours", "épaisseur"** |
+| **1.12** | **[BUG B3] Corriger l'ordre des couleurs dans le generator pour utiliser `#FFD21E` comme primaire** | **P0** | ⬜ | **Le generator prend `colors[1]` (#6B7280 gris) comme primary au lieu de `#FFD21E` (jaune). Solution : soit trier par rôle sémantique, soit mapper manuellement jaune→primary, orange→accent** |
 
 ---
 
@@ -38,9 +41,10 @@
 | 2.1 | Implémenter la boucle `while not valid` dans `reflector.py` | P0 | ✅ | `_generate_with_refine()` avec `for i in range(max_iter)` |
 | 2.2 | Ajouter un compteur d'itérations max (ex: 5) | P0 | ✅ | `max_iter=5` en paramètre du constructeur |
 | 2.3 | Logger chaque itération (numéro, erreur, SVG produit) | P1 | ✅ | `history` dans le retour avec iter, valid, errors |
-| 2.4 | Implémenter un ajustement paramétrique après échec | P1 | 🔶 | `_adjust()` crée des hints mais `generate_icon()` ne les lit pas — no-op |
+| 2.4 | Implémenter un ajustement paramétrique après échec | P1 | 🔶 | `_adjust()` crée des hints mais `generate_icon()` ne les lit pas — no-op (⚠️ **BUG B4**) |
 | 2.5 | Ajouter un scoring de fidélité sémantique | P2 | ⬜ | Mesurer si le SVG correspond au concept |
 | 2.6 | Ajouter un scoring de cohérence de collection | P2 | ✅ | `collection_consistency()` avec score stroke + densité via `_homogeneity()` |
+| **2.7** | **[BUG B4] Connecter `_adjust()` au generator : les hints doivent influencer la génération** | **P1** | ⬜ | **Actuellement `_adjust()` set des hints mais `generate_icon()` les ignore. Il faut que le generator lise les hints pour ajuster : réduire taille (shrink), forcer palette, etc.** |
 
 ---
 
@@ -150,11 +154,11 @@
 
 | Priorité | Total | Fait | Reste |
 |----------|-------|------|-------|
-| P0 | 18 | 6 | 12 |
-| P1 | 31 | 11 | 20 |
+| P0 | 21 | 7 | 14 |
+| P1 | 33 | 11 | 22 |
 | P2 | 9 | 0 | 9 |
 | P3 | 0 | 0 | 0 |
-| **Total** | **58** | **17** | **41** |
+| **Total** | **63** | **18** | **45** |
 
 ---
 
