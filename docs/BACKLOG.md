@@ -17,7 +17,7 @@
 
 | #        | Tâche                                                                                                | Priorité | Statut | Notes                                                                                                                                                                                          |
 | -------- | ---------------------------------------------------------------------------------------------------- | -------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1.1      | Corriger `config/prompts.yaml` : supprimer les valeurs hardcodées                                    | P0       | ⬜     | viewBox, stroke-width, etc. doivent être chargés dynamiquement depuis `brand-guidelines.md`                                                                                                    |
+| 1.1 | Corriger `config/prompts.yaml` : supprimer les valeurs hardcodées | P0 | ✅ | `rules: {}` — les valeurs sont extraites dynamiquement par `src/parser.py` |
 | 1.2      | Corriger `generator.py` : supprimer les couleurs hardcodées (`self.yellow`, `self.orange`, etc.)     | P0       | ✅     | Couleurs dynamiques via `brand_style["allowed_colors"]`, convention 1ère=stroke, 2e=primary, 3e=accent                                                                                         |
 | 1.3      | Corriger `parser.py` : extraire les `required_colors` depuis le markdown                             | P0       | ⬜     | ⚠️ **BUG B3** : les couleurs sont triées alphabétiquement, `#FFD21E` (jaune) n'est jamais utilisée comme fill principal — le validator exige `#FFD21E` comme couleur visible                   |
 | 1.4      | Corriger `parser.py` : parser le `stroke-linecap` et `stroke-linejoin` depuis le markdown            | P0       | ✅     | Extraits dynamiquement via regex                                                                                                                                                               |
@@ -154,11 +154,11 @@
 
 | Priorité  | Total  | Fait   | Reste  |
 | --------- | ------ | ------ | ------ |
-| P0        | 21     | 7      | 14     |
+| P0 | 21 | 8 | 13 |
 | P1        | 33     | 11     | 22     |
 | P2        | 9      | 0      | 9      |
 | P3        | 0      | 0      | 0      |
-| **Total** | **63** | **18** | **45** |
+| **Total** | **63** | **19** | **44** |
 
 ---
 
